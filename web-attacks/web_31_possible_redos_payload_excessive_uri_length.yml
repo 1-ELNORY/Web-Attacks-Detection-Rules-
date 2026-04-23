@@ -1,0 +1,22 @@
+title: Possible ReDoS Payload - Excessive URI Length
+id: f8d9f024-8245-4f63-af1d-cbb1628a70c2
+status: test
+description: Detects incoming web requests with URI length exceeding 5000 characters,
+  a primary vector for triggering catastrophic backtracking in vulnerable regex engines
+references: []
+author: Ahmed Elnoury
+date: 2025/01/01
+tags:
+- attack.initial_access
+- attack.impact
+- attack.t1190
+- attack.t1499.002
+logsource:
+  category: webserver
+detection:
+  keywords:
+  - '*'
+  condition: keywords
+falsepositives:
+- Legitimate applications with long query strings such as OAuth tokens or signed URLs
+level: medium
