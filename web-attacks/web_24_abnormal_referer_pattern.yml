@@ -1,0 +1,27 @@
+title: Abnormal Referer Pattern
+id: b53eb85f-6659-43c8-9d09-65268e96732f
+status: experimental
+description: Identifies HTTP requests where the Referer header contains suspicious
+  path traversal, script tags, or protocol indicators indicating CSRF, open redirect
+  exploitation, or scanning
+references: []
+author: Ahmed Elnoury
+date: 2025/01/01
+tags:
+- attack.initial_access
+- attack.t1566
+- attack.t1190
+logsource:
+  category: webserver
+detection:
+  selection:
+    cs(Referer)|contains:
+    - ..
+    - etc/passwd
+    - <script>
+    - '%3c'
+    - ftp://
+  condition: selection
+falsepositives:
+- Misconfigured applications that include full URI data in Referer headers
+level: medium
