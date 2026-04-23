@@ -1,0 +1,36 @@
+title: Web Shell Upload Detection
+id: b142ac33-4c5c-4678-b84e-eb6560efefca
+status: test
+description: Detects potential web shell file uploads containing obfuscated PHP/script
+  execution functions
+references: []
+author: Ahmed Elnoury
+date: 2025/01/01
+tags:
+- attack.defense_evasion
+- attack.execution
+- attack.persistence
+- attack.t1027
+- attack.t1059.006
+- attack.t1505.003
+logsource:
+  category: webserver
+detection:
+  selection_method:
+    cs-method: POST
+  selection_content:
+    cs-uri|contains:
+    - eval(
+    - system(
+    - shell_exec(
+    - passthru(
+    - base64_decode(
+    - gzuncompress(
+    - c99shell
+    - r57shell
+    - WSO_VERSION
+    - webadmin
+  condition: selection_method and selection_content
+falsepositives:
+- Legitimate PHP application functions that use eval() or base64 for encoding
+level: critical
