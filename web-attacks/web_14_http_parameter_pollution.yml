@@ -1,0 +1,24 @@
+title: HTTP Parameter Pollution
+id: 9086829c-3b5e-497d-87b0-f58298540050
+status: experimental
+description: Detects HTTP Parameter Pollution (HPP) attacks injecting duplicate parameters
+  to bypass validation or manipulate application logic
+references: []
+author: Ahmed Elnoury
+date: 2025/01/01
+tags:
+- attack.privilege_escalation
+- attack.initial_access
+- attack.defense_evasion
+- attack.t1548
+- attack.t1190
+- attack.t1562.001
+logsource:
+  category: webserver
+detection:
+  selection:
+    cs-uri|re: ([?&])(id|user|email|action|role|admin|uid|username|password|token|account|session)=.*[&]\2=
+  condition: selection
+falsepositives:
+- Web frameworks that use repeated parameter names for multi-value form fields
+level: medium
