@@ -1,0 +1,28 @@
+title: Cross-Site Request Forgery (CSRF)
+id: 2f1eea2a-7e85-4d3a-8e38-a068664b5869
+status: experimental
+description: Detects state-changing HTTP POST requests to admin or action endpoints
+  with a Referer that does not match the application domain
+references: []
+author: Ahmed Elnoury
+date: 2025/01/01
+tags:
+- attack.initial_access
+- attack.impact
+- attack.t1491
+- attack.t1566
+logsource:
+  category: webserver
+detection:
+  selection_method:
+    cs-method: POST
+  selection_uri:
+    cs-uri|contains:
+    - /admin/
+    - /settings/
+    - /update
+    - /delete
+  condition: selection_method and selection_uri
+falsepositives:
+- Legitimate cross-domain integrations with proper CSRF token validation
+level: medium
