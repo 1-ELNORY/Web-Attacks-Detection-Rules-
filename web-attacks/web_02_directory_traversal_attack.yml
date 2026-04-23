@@ -1,0 +1,24 @@
+title: Directory Traversal Attack
+id: 072f7dbf-897f-466b-b285-64d631497017
+status: experimental
+description: Detects attempts to access files outside the web root via directory traversal
+references: []
+author: Ahmed Elnoury
+date: 2025/01/01
+tags:
+- attack.discovery
+- attack.initial_access
+- attack.t1083
+- attack.t1190
+logsource:
+  category: webserver
+detection:
+  selection:
+    cs-uri|contains:
+    - ../
+    - ..%2F
+    - ..\.\./
+  condition: selection
+falsepositives:
+- Legitimate use of relative paths in application URIs
+level: high
