@@ -1,0 +1,33 @@
+title: Large Data Upload - Potential Exfiltration
+id: 1eaab5cb-3b9f-48d2-93ff-8177d450c7ab
+status: experimental
+description: Detects uploads exceeding 50 MB to non-standard endpoints, indicating
+  potential data theft or staging
+references: []
+author: Ahmed Elnoury
+date: 2025/01/01
+tags:
+- attack.collection
+- attack.exfiltration
+- attack.t1074.001
+- attack.t1567.002
+- attack.t1041
+logsource:
+  category: webserver
+detection:
+  selection_method:
+    cs-method:
+    - POST
+    - PUT
+    - PATCH
+  filter_legit:
+    cs-uri|contains:
+    - /upload
+    - /import
+    - /attach
+    - /media
+    - /submit
+  condition: selection_method and not filter_legit
+falsepositives:
+- Legitimate large file uploads to authorized endpoints
+level: critical
