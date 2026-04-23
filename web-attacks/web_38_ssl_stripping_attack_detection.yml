@@ -1,0 +1,23 @@
+title: SSL Stripping Attack Detection
+id: c72b4982-037b-4090-a463-b6deac721364
+status: experimental
+description: Detects HTTPS to HTTP protocol downgrade attempts via Location header
+  manipulation indicating an active SSL stripping man-in-the-middle attack
+references: []
+author: Ahmed Elnoury
+date: 2025/01/01
+tags:
+- attack.collection
+- attack.credential_access
+- attack.t1185
+- attack.t1557.001
+logsource:
+  category: webserver
+detection:
+  selection:
+    cs-uri|contains:
+    - http://
+  condition: selection
+falsepositives:
+- Internal HTTP redirects within a trusted network or during maintenance windows
+level: critical
