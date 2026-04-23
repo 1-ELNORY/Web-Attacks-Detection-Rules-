@@ -1,0 +1,33 @@
+title: Large Data Download - Inbound Risk
+id: fb9c675b-9d64-4f4f-8d36-05af1b2185fc
+status: experimental
+description: Detects downloads exceeding 100 MB from non-standard endpoints indicating
+  potential large payload delivery
+references: []
+author: Ahmed Elnoury
+date: 2025/01/01
+tags:
+- attack.impact
+- attack.command_and_control
+- attack.initial_access
+- attack.t1499.002
+- attack.t1105
+- attack.t1190
+logsource:
+  category: webserver
+detection:
+  selection_method:
+    cs-method: GET
+  selection_status:
+    sc-status: 200
+  filter_legit:
+    cs-uri|contains:
+    - /download
+    - /export
+    - /backup
+    - /report
+    - /update
+  condition: selection_method and selection_status and not filter_legit
+falsepositives:
+- Legitimate bulk data downloads from authorized endpoints
+level: high
