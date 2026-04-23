@@ -1,0 +1,33 @@
+title: Automation and Scripting Client Detection
+id: c260cb1d-d2a5-411b-94bc-d2936c7e40a3
+status: experimental
+description: Detects automated HTTP clients such as curl, wget, and python-requests
+  accessing sensitive application endpoints
+references: []
+author: Ahmed Elnoury
+date: 2025/01/01
+tags:
+- attack.collection
+- attack.discovery
+- attack.reconnaissance
+- attack.t1213
+- attack.t1046
+- attack.t1595
+logsource:
+  category: webserver
+detection:
+  selection_agent:
+    cs(User-Agent)|contains:
+    - curl
+    - wget
+    - python-requests
+    - libwww-perl
+    - lynx
+    - go-http-client
+    - php-http-client
+  selection_status:
+    sc-status: 200
+  condition: selection_agent and selection_status
+falsepositives:
+- Authorized automation scripts, monitoring agents, or CI/CD pipeline health checks
+level: medium
