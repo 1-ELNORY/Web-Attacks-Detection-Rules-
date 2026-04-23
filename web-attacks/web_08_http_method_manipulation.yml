@@ -1,0 +1,38 @@
+title: HTTP Method Manipulation
+id: 94e44efa-3fbd-4a3e-a7b8-025123c10a37
+status: experimental
+description: Detects unusual or restricted HTTP methods and method override header
+  abuse
+references: []
+author: Ahmed Elnoury
+date: 2025/01/01
+tags:
+- attack.discovery
+- attack.initial_access
+- attack.defense_evasion
+- attack.t1046
+- attack.t1190
+- attack.t1562.001
+logsource:
+  category: webserver
+detection:
+  selection_method:
+    cs-method:
+    - TRACE
+    - TRACK
+    - DELETE
+    - PUT
+    - PATCH
+    - CONNECT
+    - OPTIONS
+  selection_override:
+    cs-uri|contains:
+    - 'X-HTTP-Method-Override:'
+    - 'X-Method-Override:'
+    - _method=PUT
+    - _method=DELETE
+    - _method=PATCH
+  condition: selection_method or selection_override
+falsepositives:
+- RESTful APIs that legitimately use PUT/DELETE/PATCH/OPTIONS methods
+level: medium
