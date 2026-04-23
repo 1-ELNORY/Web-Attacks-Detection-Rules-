@@ -1,0 +1,25 @@
+title: Excessive API Requests - Rate Abuse
+id: cd991bfe-9c99-47bc-81b2-b0b36e64f044
+status: experimental
+description: Detects API rate limit violations indicating automated scraping, brute
+  force, or denial-of-service attempts
+references: []
+author: Ahmed Elnoury
+date: 2025/01/01
+tags:
+- attack.exfiltration
+- attack.credential_access
+- attack.initial_access
+- attack.t1020
+- attack.t1110
+- attack.t1190
+logsource:
+  category: webserver
+detection:
+  selection:
+    cs-uri|contains:
+    - /api/
+  condition: selection
+falsepositives:
+- Legitimate high-volume API consumers such as data pipelines or integrations
+level: medium
