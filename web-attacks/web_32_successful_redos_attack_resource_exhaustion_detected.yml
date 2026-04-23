@@ -1,0 +1,25 @@
+title: Successful ReDoS Attack - Resource Exhaustion Detected
+id: 45ec77fc-c238-4d43-89e0-961fbfde7d6a
+status: test
+description: Detects web responses with processing time exceeding 10 seconds indicating
+  successful ReDoS-induced regex engine backtracking and service degradation
+references: []
+author: Ahmed Elnoury
+date: 2025/01/01
+tags:
+- attack.initial_access
+- attack.impact
+- attack.t1190
+- attack.t1499.002
+logsource:
+  category: webserver
+detection:
+  selection:
+    sc-status:
+    - 200
+    - 500
+    - 503
+  condition: selection
+falsepositives:
+- Legitimate slow database queries or heavy computation endpoints
+level: high
