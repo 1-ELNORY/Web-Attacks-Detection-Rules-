@@ -1,0 +1,25 @@
+title: GraphQL Deep Nesting Attack
+id: 4a5df64d-80ed-403a-82ab-e1304e628427
+status: test
+description: Detects GraphQL deep nesting attacks (5+ levels) designed to exhaust
+  server resources and cause denial of service
+references: []
+author: Ahmed Elnoury
+date: 2025/01/01
+tags:
+- attack.reconnaissance
+- attack.discovery
+- attack.t1595
+- attack.t1082
+logsource:
+  category: webserver
+detection:
+  selection_method:
+    cs-method: POST
+  selection_uri:
+    cs-uri|contains: /graphql
+  condition: selection_method and selection_uri
+falsepositives:
+- Legitimate complex GraphQL queries from approved clients with deeply nested data
+  requirements
+level: high
