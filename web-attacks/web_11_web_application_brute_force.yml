@@ -1,0 +1,38 @@
+title: Web Application Brute Force
+id: 3de03e47-d31f-4a58-9174-754cd60642e4
+status: experimental
+description: Detects multiple failed login attempts against web authentication endpoints
+  indicating a brute force attack
+references: []
+author: Ahmed Elnoury
+date: 2025/01/01
+tags:
+- attack.initial_access
+- attack.credential_access
+- attack.t1078
+- attack.t1110.003
+- attack.t1110.001
+logsource:
+  category: webserver
+detection:
+  selection_method:
+    cs-method: POST
+  selection_uri:
+    cs-uri|contains:
+    - login
+    - signin
+    - auth
+    - authenticate
+    - session
+    - api/login
+    - api/auth
+    - wp-login.php
+  selection_status:
+    sc-status:
+    - 401
+    - 403
+    - 400
+  condition: selection_method and selection_uri and selection_status
+falsepositives:
+- Legitimate users forgetting credentials and triggering lockout thresholds
+level: high
