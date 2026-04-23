@@ -1,0 +1,30 @@
+title: JWT Attack Detected
+id: 5bd0dae5-009c-4346-a156-0ead7388374d
+status: experimental
+description: Detects suspicious JWT token manipulation including none-algorithm bypass,
+  key confusion, and kid path traversal attacks
+references: []
+author: Ahmed Elnoury
+date: 2025/01/01
+tags:
+- attack.credential_access
+- attack.t1550.001
+logsource:
+  category: webserver
+detection:
+  selection:
+    cs-uri|contains:
+    - eyJhbGciOiJub25lIn0
+    - eyJhbGciOiJOT05FIn0
+  selection_kid:
+    cs-uri|contains|all:
+    - kid
+    - ../
+  selection_jwk:
+    cs-uri|contains|all:
+    - jwk
+    - http
+  condition: selection or selection_kid or selection_jwk
+falsepositives:
+- JWT testing tools used by developers in non-production environments
+level: high
