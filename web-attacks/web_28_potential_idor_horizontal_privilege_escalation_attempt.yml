@@ -1,0 +1,25 @@
+title: Potential IDOR / Horizontal Privilege Escalation Attempt
+id: 011653d4-533a-4cb8-a522-83609133c321
+status: experimental
+description: Detects patterns where sequential numeric IDs are accessed across user
+  profile, account settings, or invoice download endpoints indicating IDOR exploitation
+references: []
+author: Ahmed Elnoury
+date: 2025/01/01
+tags:
+- attack.privilege_escalation
+- attack.t1548
+logsource:
+  category: webserver
+detection:
+  selection_uri:
+    cs-uri|contains:
+    - /api/users/
+    - /account/settings/
+    - /download/invoice/
+  selection_num:
+    cs-uri|re: /[0-9]+$
+  condition: selection_uri and selection_num
+falsepositives:
+- Legitimate users accessing their own resource IDs sequentially
+level: high
