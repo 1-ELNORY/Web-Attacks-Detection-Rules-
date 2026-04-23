@@ -1,0 +1,39 @@
+title: Advanced SSRF Attack Detection
+id: 8ff2be60-9716-4eae-87a3-d777eae299fd
+status: experimental
+description: Detects Server-Side Request Forgery (SSRF) by identifying protocol schemes,
+  cloud metadata endpoints, loopback addresses, and private IP ranges in URI parameters
+references: []
+author: Ahmed Elnoury
+date: 2025/01/01
+tags:
+- attack.initial_access
+- attack.credential_access
+- attack.discovery
+- attack.t1190
+- attack.t1552.005
+- attack.t1018
+- attack.t1046
+logsource:
+  category: webserver
+detection:
+  selection_metadata:
+    cs-uri|contains:
+    - 169.254.169.254
+    - metadata.google.internal
+    - metadata.azure.com
+    - instance-data
+  selection_loopback:
+    cs-uri|contains:
+    - localhost
+    - 127.0.0.1
+    - '[::1]'
+    - '2130706433'
+  selection_scheme:
+    cs-uri|re: /(url|uri|path|dest|redirect|link|src|fetch|proxy)=(https?|file|gopher|dict|ftp|ldap)(:|%3a)(\/\/|%2f%2f)/i
+  selection_private:
+    cs-uri|re: ://(10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[0-1])\.)
+  condition: 1 of selection_*
+falsepositives:
+- Internal proxy systems or legitimate service-to-service communication
+level: high
