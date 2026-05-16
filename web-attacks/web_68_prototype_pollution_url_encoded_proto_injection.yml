@@ -1,0 +1,29 @@
+title: Prototype Pollution - URL-Encoded __proto__ Injection Attempt
+id: c7d8e9f0-a1b2-3456-cdef-567890123456
+status: experimental
+description: >
+  Detects URL-encoded variants of JavaScript prototype pollution payloads
+  (%5F%5Fproto%5F%5F, __proto__%5B, constructor%5Bprototype%5D) designed to
+  bypass naive string-matching input filters that only block literal __proto__.
+references: []
+author: Ahmed Elnoury
+date: 2025/06/01
+tags:
+  - attack.initial_access
+  - attack.defense_evasion
+  - attack.t1190
+  - attack.t1027
+logsource:
+  category: webserver
+detection:
+  selection:
+    cs-uri|contains:
+      - '%5F%5Fproto%5F%5F'
+      - '__proto__%5B'
+      - 'constructor%5Bprototype%5D'
+      - '%5F%5Fproto%5F%5F%5B'
+      - '%5f%5fproto%5f%5f'
+  condition: selection
+falsepositives:
+  - URL-encoded legitimate data that coincidentally matches prototype property patterns
+level: high
