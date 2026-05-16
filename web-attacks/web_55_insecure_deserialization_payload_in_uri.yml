@@ -1,0 +1,25 @@
+title: Insecure Deserialization Payload in URI (Java/PHP/Python/.NET/Node.js)
+id: b4c5d6e7-f8a9-0123-bcde-234567890123
+status: experimental
+description: >
+  Detects insecure deserialization payloads embedded in the URI across multiple
+  language runtimes: Java (rO0), PHP (Tzo/YTo), Python/pickle (gASV),
+  .NET (AAEAAAD), and Node.js (_$$ND_FUNC$$_). These payloads can lead to
+  Remote Code Execution when deserialized server-side.
+references: []
+author: Ahmed Elnoury
+date: 2025/06/01
+tags:
+  - attack.initial_access
+  - attack.execution
+  - attack.t1190
+  - attack.t1203
+logsource:
+  category: webserver
+detection:
+  selection:
+    cs-uri|re: 'rO0[A-Za-z0-9+/]{4,}|Tzo[0-9A-Za-z+/]{2,}|YTo[0-9A-Za-z+/]{2,}|gASV|AAEAAAD|_\$\$ND_FUNC\$\$_'
+  condition: selection
+falsepositives:
+  - Base64-encoded legitimate data that coincidentally matches deserialization magic bytes
+level: critical
