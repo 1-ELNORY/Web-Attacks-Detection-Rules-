@@ -1,0 +1,25 @@
+title: Open Redirect - External Domain Redirect via High-Risk URL Parameter
+id: f0a1b2c3-d4e5-6789-fabc-890123456789
+status: experimental
+description: >
+  Detects open redirect attacks via high-risk URL parameters (redirect, next, return,
+  goto, dest, destination) pointing to external domains not belonging to the application.
+  Enables phishing, credential harvesting, and malware delivery through trusted-domain abuse.
+references: []
+author: Ahmed Elnoury
+date: 2025/06/01
+tags:
+  - attack.initial_access
+  - attack.credential_access
+  - attack.t1190
+  - attack.t1566.002
+logsource:
+  category: webserver
+detection:
+  selection:
+    cs-uri|re: '(?i)[?&;](redirect|next|return|goto|dest|destination)=https?://(?!.*yourdomain\.com)[a-z0-9\-]+\.[a-z]{2,24}'
+  condition: selection
+falsepositives: >
+  Replace yourdomain.com with your actual domain. Legitimate redirect parameters
+  to partner/trusted domains may require allowlisting.
+level: high
