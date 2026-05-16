@@ -1,6 +1,6 @@
 # 🛡️ Web Attack Detection Rules
 
-> **Wazuh + Sigma detection rules** covering the OWASP Top 10, MITRE ATT&CK web-layer techniques, and modern API attack vectors — purpose-built for real-world SOC environments.
+>  Sigma detection rules covering the OWASP Top 10, MITRE ATT&CK web-layer techniques, and modern API attack vectors — purpose-built for real-world SOC environments.
 
 ---
 
@@ -10,7 +10,6 @@ This repository contains **75 production-grade detection rules** across two form
 
 | Format | Count | Location |
 |--------|-------|----------|
-| **Wazuh XML** | 75 rules | `wazuh/` |
 | **Sigma YAML** | 75 rules | `web-attacks/` |
 
 Rules are organized by attack category, mapped to MITRE ATT&CK, and maintained with full detection logic documentation. Each rule ships with: description, severity level, detection logic breakdown, MITRE tactic/technique mapping, false positive guidance, and author attribution.
@@ -229,7 +228,7 @@ Web-Attacks-Detection-Rules/
 ## 👤 Author
 
 **Ahmed Elnoury**  
-SOC Engineer | Detection Engineering  
+Senior Cyber Defense Engineer L3 | Detection Engineering  
 All rules authored, tested, and documented as part of an ongoing web-layer detection coverage initiative.
 
 ---
@@ -237,7 +236,3 @@ All rules authored, tested, and documented as part of an ongoing web-layer detec
 ## 📄 License
 
 This project is licensed for internal SOC and blue team use. Rules are provided as-is — always tune false positive thresholds for your specific environment before deploying to production.
-
----
-
-*Last updated: Q2 2025 — 75 rules across 13 MITRE ATT&CK tactics*
