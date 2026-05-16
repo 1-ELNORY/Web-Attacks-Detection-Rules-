@@ -1,0 +1,35 @@
+title: Critical CSV Injection - Formula Characters in Confirmed Spreadsheet Upload
+id: f8a9b0c1-d2e3-4567-fabc-678901234567
+status: experimental
+description: >
+  Detects formula injection characters (=, +, -, @, URL-encoded variants) in
+  confirmed CSV/Excel/spreadsheet uploads identified by Content-Type header.
+  High-confidence rule combining file type confirmation with formula trigger detection.
+references: []
+author: Ahmed Elnoury
+date: 2025/06/01
+tags:
+  - attack.exfiltration
+  - attack.execution
+  - attack.t1567
+  - attack.t1059
+logsource:
+  category: webserver
+detection:
+  selection_contenttype:
+    cs-uri|contains:
+      - 'text/csv'
+      - 'vnd.ms-excel'
+      - 'spreadsheetml'
+      - 'openxmlformats'
+      - 'tab-separated'
+  selection_formula:
+    cs-uri|contains:
+      - '%3D'
+      - '%2B'
+      - '%2D'
+      - '%40'
+  condition: selection_contenttype and selection_formula
+falsepositives:
+  - Legitimate CSV/Excel files that happen to contain URL-encoded characters in filenames
+level: high
