@@ -1,0 +1,31 @@
+title: Auth Endpoint Request with User Identifier - Enumeration Monitor
+id: f2a3b4c5-d6e7-8901-fabc-012345678901
+status: experimental
+description: >
+  Detects authentication endpoint requests (check-user, signup, forgot-password)
+  that include email, username, or user_id identifiers. Feeds account enumeration
+  frequency detection. Low-level monitor rule.
+references: []
+author: Ahmed Elnoury
+date: 2025/06/01
+tags:
+  - attack.reconnaissance
+  - attack.t1589.002
+logsource:
+  category: webserver
+detection:
+  selection_uri:
+    cs-uri|contains:
+      - '/auth/check-user'
+      - '/signup'
+      - '/forgot-password'
+  selection_param:
+    cs-uri|contains:
+      - 'email='
+      - 'username='
+      - 'user_id='
+      - 'login_id='
+  condition: selection_uri and selection_param
+falsepositives:
+  - Legitimate user registration and account recovery flows
+level: low
