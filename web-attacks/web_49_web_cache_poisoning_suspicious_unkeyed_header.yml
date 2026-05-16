@@ -1,0 +1,30 @@
+title: Potential Web Cache Poisoning - Suspicious Unkeyed HTTP Header
+id: b8c9d0e1-f2a3-4567-bcde-678901234567
+status: experimental
+description: >
+  Detects suspicious unkeyed HTTP headers (X-Forwarded-Host, X-Original-URL,
+  X-Rewrite-URL, X-Host, X-HTTP-Method-Override) containing external, non-private
+  values. Indicates web cache poisoning or routing bypass attempts.
+references: []
+author: Ahmed Elnoury
+date: 2025/06/01
+tags:
+  - attack.initial_access
+  - attack.impact
+  - attack.t1190
+  - attack.t1565.002
+logsource:
+  category: webserver
+detection:
+  selection:
+    cs-uri|contains:
+      - 'X-Forwarded-Host:'
+      - 'X-Original-URL:'
+      - 'X-Rewrite-URL:'
+      - 'X-Host:'
+      - 'X-HTTP-Method-Override:'
+      - 'X-Forwarded-Server:'
+  condition: selection
+falsepositives:
+  - Reverse proxy configurations that legitimately forward host headers to origin servers
+level: high
