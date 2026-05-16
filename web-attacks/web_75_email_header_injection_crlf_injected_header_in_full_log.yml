@@ -1,0 +1,42 @@
+title: Email Header Injection - CRLF with Injected Email Header in Full Log (POST Body)
+id: d4e5f6a7-b8c9-0123-defa-234567890123
+status: experimental
+description: >
+  Companion rule to web_74. Detects email header injection in POST request bodies and
+  raw HTTP logs via CRLF sequences (raw \r\n or URL-encoded %0d%0a) followed by
+  injected email headers (To, CC, BCC, From, Reply-To, X-Mailer). Covers form-POST
+  based email injection vectors not captured in URL analysis.
+references: []
+author: Ahmed Elnoury
+date: 2025/06/01
+tags:
+  - attack.initial_access
+  - attack.impact
+  - attack.t1190
+  - attack.t1491
+logsource:
+  category: webserver
+detection:
+  selection_method:
+    cs-method: POST
+  selection_crlf:
+    cs-uri|contains:
+      - '%0d%0a'
+      - '%0D%0A'
+      - '\r\n'
+      - '\r'
+      - '\n'
+  selection_header:
+    cs-uri|contains:
+      - 'to:'
+      - 'cc:'
+      - 'bcc:'
+      - 'from:'
+      - 'reply-to:'
+      - 'x-mailer:'
+      - 'x-originating-ip:'
+      - 'x-spam-status:'
+  condition: selection_method and selection_crlf and selection_header
+falsepositives:
+  - Legitimate email submission forms that include raw header values in POST body fields
+level: high
