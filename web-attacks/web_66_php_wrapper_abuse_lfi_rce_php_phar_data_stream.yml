@@ -1,0 +1,36 @@
+title: PHP Wrapper Abuse - LFI or RCE via php:// phar:// data:// expect:// Streams
+id: a5b6c7d8-e9f0-1234-abcd-345678901234
+status: experimental
+description: >
+  Detects PHP stream wrapper abuse for Local File Inclusion or Remote Code Execution:
+  php://filter (base64/convert chains to read source files), phar:// (deserialization),
+  data:// (inline code execution), expect:// (OS command execution), and glob://.
+  These wrappers bypass file-path restrictions in include/require calls.
+references: []
+author: Ahmed Elnoury
+date: 2025/06/01
+tags:
+  - attack.initial_access
+  - attack.execution
+  - attack.discovery
+  - attack.t1190
+  - attack.t1059
+  - attack.t1083
+logsource:
+  category: webserver
+detection:
+  selection:
+    cs-uri|contains:
+      - 'php://filter'
+      - 'php://input'
+      - 'phar://'
+      - 'data://'
+      - 'expect://'
+      - 'glob://'
+      - 'zlib://'
+      - 'convert.base64'
+      - '/resource='
+  condition: selection
+falsepositives:
+  - PHP development tools or CMS plugins that use PHP stream wrappers for legitimate file operations
+level: critical
