@@ -1,0 +1,31 @@
+title: Prototype Pollution - __proto__ or constructor.prototype in URL Parameter
+id: b6c7d8e9-f0a1-2345-bcde-456789012345
+status: experimental
+description: >
+  Detects JavaScript prototype pollution via __proto__, constructor.prototype, or
+  Object.prototype in URL query parameters. Successfully polluting the prototype
+  chain can cause logic bypass, privilege escalation, property injection, or
+  Remote Code Execution in Node.js server-side environments.
+references: []
+author: Ahmed Elnoury
+date: 2025/06/01
+tags:
+  - attack.initial_access
+  - attack.execution
+  - attack.t1190
+  - attack.t1203
+logsource:
+  category: webserver
+detection:
+  selection:
+    cs-uri|contains:
+      - '__proto__['
+      - '__proto__.'
+      - 'constructor.prototype'
+      - 'Object.prototype'
+      - '__proto__[constructor'
+      - '__proto__[__proto__'
+  condition: selection
+falsepositives:
+  - JavaScript frameworks using prototype extension patterns in URL-based configuration
+level: high
