@@ -1,0 +1,24 @@
+title: XML Entity Bomb - Excessive XML Entity References (15+) Parser DoS
+id: e9f0a1b2-c3d4-5678-efab-789012345678
+status: experimental
+description: >
+  Detects 15 or more XML entity references (&name;) in a single HTTP request body.
+  An abnormal concentration of entity references indicates an XML entity expansion
+  flooding attack aimed at exhausting XML parser memory and CPU resources.
+references: []
+author: Ahmed Elnoury
+date: 2025/06/01
+tags:
+  - attack.impact
+  - attack.initial_access
+  - attack.t1499.002
+  - attack.t1190
+logsource:
+  category: webserver
+detection:
+  selection:
+    cs-uri|re: '(&[a-zA-Z]\w{0,15};){15,}'
+  condition: selection
+falsepositives:
+  - Complex XML documents with legitimate high-density entity usage in content management systems
+level: high
