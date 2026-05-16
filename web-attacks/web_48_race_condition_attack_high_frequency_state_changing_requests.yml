@@ -1,0 +1,28 @@
+title: Race Condition Attack - High-Frequency State-Changing API Requests
+id: a7b8c9d0-e1f2-3456-abcd-567890123456
+status: experimental
+description: >
+  Detects potential race condition (double-spend) attacks: rapid concurrent requests
+  to checkout, withdraw, or redeem endpoints. When 10+ requests arrive from the same
+  source within 2 seconds, indicates intentional concurrency abuse for financial gain.
+references: []
+author: Ahmed Elnoury
+date: 2025/06/01
+tags:
+  - attack.impact
+  - attack.initial_access
+  - attack.t1499.002
+  - attack.t1190
+logsource:
+  category: webserver
+detection:
+  selection:
+    cs-uri|contains:
+      - '/api/v1/checkout'
+      - '/api/v1/withdraw'
+      - '/api/v1/redeem'
+  timeframe: 2s
+  condition: selection | count() by c-ip > 10
+falsepositives:
+  - Legitimate high-volume payment processing systems with retry logic
+level: high
