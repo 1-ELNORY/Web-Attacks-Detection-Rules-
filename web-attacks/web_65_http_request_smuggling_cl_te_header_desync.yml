@@ -1,0 +1,29 @@
+title: HTTP Request Smuggling - Content-Length and Transfer-Encoding Conflict (CL.TE / TE.CL)
+id: f4a5b6c7-d8e9-0123-fabc-234567890123
+status: experimental
+description: >
+  Detects HTTP Request Smuggling via simultaneous Content-Length and
+  Transfer-Encoding: chunked headers in the same request, causing desynchronization
+  between frontend proxy and backend server. Enables bypassing security controls,
+  cache poisoning, or request hijacking (CL.TE and TE.CL attack variants).
+references: []
+author: Ahmed Elnoury
+date: 2025/06/01
+tags:
+  - attack.initial_access
+  - attack.defense_evasion
+  - attack.t1190
+  - attack.t1562.001
+logsource:
+  category: webserver
+detection:
+  selection_cl:
+    cs-uri|re: 'Content-Length:\s*\d+'
+  selection_te:
+    cs-uri|contains:
+      - 'Transfer-Encoding: chunked'
+      - 'Transfer-Encoding:chunked'
+  condition: selection_cl and selection_te
+falsepositives:
+  - Misconfigured web servers or load balancers that add both headers simultaneously
+level: critical
