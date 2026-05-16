@@ -1,0 +1,30 @@
+title: OTP/MFA Brute-Force Tool Detected - Fuzzer Placeholder in Request
+id: d4e5f6a7-b8c9-0123-defa-234567890123
+status: experimental
+description: >
+  Detects Burp Suite Intruder or fuzzing tool placeholder markers (FUZZ, PAYLOAD,
+  INTRUDER) inside OTP/MFA/2FA/passcode URL parameters, indicating automated
+  brute-force of one-time authentication codes.
+references: []
+author: Ahmed Elnoury
+date: 2025/06/01
+tags:
+  - attack.credential_access
+  - attack.t1110.001
+  - attack.t1589
+logsource:
+  category: webserver
+detection:
+  selection_param:
+    cs-uri|re: '[?&](otp|mfa|2fa|token|passcode|code|pin)[^=]*='
+  selection_fuzzer:
+    cs-uri|contains:
+      - 'FUZZ'
+      - 'PAYLOAD'
+      - 'INTRUDER'
+      - '%C2%A7'
+      - '%A7'
+  condition: selection_param and selection_fuzzer
+falsepositives:
+  - Authorized penetration testing engagements with explicit written permission
+level: high
