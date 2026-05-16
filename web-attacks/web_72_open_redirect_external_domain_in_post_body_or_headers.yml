@@ -1,0 +1,27 @@
+title: Open Redirect - External Domain Redirect in POST Body or Headers
+id: a1b2c3d4-e5f6-7890-abcd-901234567890
+status: experimental
+description: >
+  Companion rule to web_71. Detects open redirect payloads in POST request bodies
+  or HTTP headers (not just query strings) via redirect/next/return/goto/dest parameters
+  pointing to external domains. Covers form-based redirect injection vectors.
+references: []
+author: Ahmed Elnoury
+date: 2025/06/01
+tags:
+  - attack.initial_access
+  - attack.credential_access
+  - attack.t1190
+  - attack.t1566.002
+logsource:
+  category: webserver
+detection:
+  selection_method:
+    cs-method: POST
+  selection_payload:
+    cs-uri|re: '(?i)(redirect|next|return|goto|dest|destination)=https?://(?!.*yourdomain\.com)[a-z0-9\-]+\.[a-z]{2,24}'
+  condition: selection_method and selection_payload
+falsepositives: >
+  Replace yourdomain.com with your actual domain. Legitimate POST-based redirect flows
+  to trusted partner domains require allowlisting.
+level: high
