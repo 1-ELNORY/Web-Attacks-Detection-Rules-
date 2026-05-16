@@ -1,0 +1,43 @@
+title: XPath / XQuery Injection - Malicious XML Query Patterns
+id: b2c3d4e5-f6a7-8901-bcde-012345678901
+status: experimental
+description: >
+  Detects XPath and XQuery injection via SQL-like OR/AND tautologies, XPath functions
+  (count, name, local-name, namespace-uri, boolean, contains, starts-with, substring,
+  concat, translate) and axis notation (//*, /text(), /comment(), /processing-instruction()).
+  Enables authentication bypass and unauthorized data extraction from XML databases.
+references: []
+author: Ahmed Elnoury
+date: 2025/06/01
+tags:
+  - attack.initial_access
+  - attack.credential_access
+  - attack.t1190
+  - attack.t1212
+logsource:
+  category: webserver
+detection:
+  selection_tautology:
+    cs-uri|re: '(?i)(''")\s*(or|and)\s+.*=.*'
+  selection_functions:
+    cs-uri|contains:
+      - 'count('
+      - 'string-length('
+      - 'local-name('
+      - 'namespace-uri('
+      - 'boolean('
+      - 'contains('
+      - 'starts-with('
+      - 'substring('
+      - 'concat('
+      - 'translate('
+  selection_axis:
+    cs-uri|contains:
+      - '//*'
+      - '/text()'
+      - '/comment()'
+      - '/processing-instruction()'
+  condition: selection_tautology or selection_functions or selection_axis
+falsepositives:
+  - XPath-based search APIs that expose query parameters to end users
+level: high
