@@ -1,0 +1,29 @@
+title: SSRF - Cloud Metadata Service Targeting via AWS/GCP Characteristic Headers
+id: e3f4a5b6-c7d8-9012-efab-123456789012
+status: experimental
+description: >
+  Detects SSRF attempts targeting cloud instance metadata services via characteristic
+  request headers: Metadata-Flavor: Google (GCP IMDSv1/v2) or the AWS IMDSv2 session
+  TTL header (X-aws-ec2-metadata-token-ttl-seconds). Indicates credential theft
+  through cloud metadata API access.
+references: []
+author: Ahmed Elnoury
+date: 2025/06/01
+tags:
+  - attack.credential_access
+  - attack.initial_access
+  - attack.t1552.005
+  - attack.t1190
+logsource:
+  category: webserver
+detection:
+  selection:
+    cs-uri|contains:
+      - 'Metadata-Flavor: Google'
+      - 'X-aws-ec2-metadata-token-ttl-seconds'
+      - '169.254.169.254'
+      - 'metadata.google.internal'
+  condition: selection
+falsepositives:
+  - Cloud-native applications that legitimately proxy metadata API requests
+level: high
