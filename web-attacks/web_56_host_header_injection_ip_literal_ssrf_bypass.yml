@@ -1,0 +1,24 @@
+title: Host Header Injection - IP Address or Internal Host (SSRF/Bypass Risk)
+id: c5d6e7f8-a9b0-1234-cdef-345678901234
+status: experimental
+description: >
+  Detects IP literals (127.0.0.1, 169.254.169.254, ::1, localhost, private ranges)
+  in Host, X-Forwarded-Host, or X-Host headers. IP literals in host overrides are
+  almost always malicious — indicating SSRF or authentication bypass attempts.
+references: []
+author: Ahmed Elnoury
+date: 2025/06/01
+tags:
+  - attack.initial_access
+  - attack.credential_access
+  - attack.t1190
+  - attack.t1552.005
+logsource:
+  category: webserver
+detection:
+  selection:
+    cs-uri|re: '(?i)(X-Forwarded-Host|X-Host|X-Forwarded-Server|Host)[\s:"'']+(?:127\.0\.0\.1|169\.254\.169\.254|::1|localhost|0\.0\.0\.0|10\.\d|192\.168\.)'
+  condition: selection
+falsepositives:
+  - Internal load balancer health checks that set Host header to IP address
+level: high
