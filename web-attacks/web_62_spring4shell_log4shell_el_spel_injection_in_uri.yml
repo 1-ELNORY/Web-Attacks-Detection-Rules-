@@ -1,0 +1,40 @@
+title: Spring4Shell / Log4Shell / EL / SpEL Injection Attempt in URI
+id: c1d2e3f4-a5b6-7890-cdef-901234567890
+status: experimental
+description: >
+  Detects Spring4Shell (CVE-2022-22965), Log4Shell (CVE-2021-44228), EL/SpEL
+  expression injection patterns in the URI: classLoader access, JNDI lookups
+  (${jndi:ldap://}, ${jndi:rmi://}), template expressions ${} #{}, Java reflection
+  calls (Runtime.getRuntime, ProcessBuilder, java.lang.reflect).
+references:
+  - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-22965
+  - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44228
+author: Ahmed Elnoury
+date: 2025/06/01
+tags:
+  - attack.initial_access
+  - attack.execution
+  - attack.t1190
+  - attack.t1203
+  - cve.2022.22965
+  - cve.2021.44228
+logsource:
+  category: webserver
+detection:
+  selection:
+    cs-uri|contains:
+      - 'class.module.classLoader'
+      - 'classLoader.resources'
+      - '${jndi:ldap://'
+      - '${jndi:rmi://'
+      - '${jndi:dns://'
+      - '${jndi:iiop://'
+      - 'Runtime.getRuntime'
+      - 'ProcessBuilder'
+      - 'java.lang.reflect'
+      - '%24%7bjndi'
+      - '%24%7Bjndi'
+  condition: selection
+falsepositives:
+  - Security scanners testing for Log4Shell/Spring4Shell in authorized assessments
+level: critical
